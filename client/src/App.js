@@ -10,6 +10,7 @@ import WorkArea from './components/WorkArea';
 import Allstudents from './pages/Allstudents/Allstudents';
 import View from './pages/view/View';
 import Marksheet from './components/Marksheet';
+import Marks from './components/Marks';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="Allstudents" element={<Allstudents/>} />
         <Route path ="view" element={<View/>} />
         <Route path="marks" element={<Marksheet/>}/>
+        <Route path="editOrAdd" element={<Marks/>}/>
         </Route>
       </Routes>
     </div>
