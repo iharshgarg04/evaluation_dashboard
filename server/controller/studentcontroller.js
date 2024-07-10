@@ -86,3 +86,32 @@ exports.fetchAllStudents = async(req,res)=>{
       console.log("error while adding marks");
     }
   };
+
+
+  exports.fetchMarks = async(req,res)=>{
+    try{
+      const studentId = req.headers.student
+      if(!studentId){
+        return res.status(400).json({
+          success:false,
+          message:"Student is not present in headers"
+        })
+      }
+      const student = await Marks.findOne({student:studentId});
+      if(!student){
+        return res.status(200).json({
+          success:false,
+          message:"Marks are not assigned yet"
+        })
+      }
+
+      res.status(200).json({
+        success:true,
+        message:"marks fetched successfully",
+        student
+      })
+    }catch(error){
+      console.log(error);
+      console.log("error while fetching Marks");
+    }
+}
