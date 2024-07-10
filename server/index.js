@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require("dotenv");
 
 const studentRoute = require('./routes/studentRoute');
+const mentorRoute = require('./routes/mentorRouter');
 
 const app = express();
 app.use(express.json());
@@ -15,7 +16,7 @@ dotenv.config();
 const PORT = process.env.PORT || 4000;
 
 app.use('/student',studentRoute);
-
+app.use('/mentor',mentorRoute);
 const connectDb = async()=>{
     try{
         const connect = await mongoose.connect(process.env.MONGO_URL);
