@@ -1,5 +1,6 @@
 const Student = require('../models/student')
-
+const Mentor = require('../models/mentor');
+const Marks = require('../models/marks');
 exports.fetchAllStudents = async(req,res)=>{
     try {
       const response = await Student.find({});
@@ -87,7 +88,6 @@ exports.fetchAllStudents = async(req,res)=>{
     }
   };
 
-
   exports.fetchMarks = async(req,res)=>{
     try{
       const studentId = req.headers.student
@@ -115,3 +115,41 @@ exports.fetchAllStudents = async(req,res)=>{
       console.log("error while fetching Marks");
     }
 }
+
+exports.fetchMyStudents = async(req,res)=>{
+    try{
+      const mentorId = req.headers.mentor
+        if(!mentorId){
+            return res.status(400).json({
+                success:false,
+                message:"Mentor id is not present."
+            })
+        }
+
+        const mentor = await Mentor.findById(mentorId);
+        if(!mentor){
+            console.log("mentor is not found");
+            return res.status(400).json({message:"mentor is not present in db"});
+        }
+
+        const populatedMentor = await mentor.populate("student");
+        const students = mentor.student
+        const markspr = students.map(async(studentId)=>{
+          const mark = await Marks.findOne({student:studentId}).populate("student").lean();
+          return { studentId, mark};
+        })
+        const studentMarks = await Promise.all(markspr);
+
+        return res.status(200).json({
+            student:populatedMentor.student,
+            message:"students fetched successfully",
+            studentMarks:studentMarks
+        })
+
+    }catch(error){
+        console.log(error.message);
+        console.log("error while fetching my Students");
+    }
+}
+
+
