@@ -1,0 +1,16 @@
+.allstudents-container{
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+.allstudents-title{
+    text-align: center;
+    padding-top: 20px;
+    flex: 1;
+}
+.studentList-all{
+    flex: 3 !important;
+}
+.allstudent-list{
+    flex: 5;
+}

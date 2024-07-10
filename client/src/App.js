@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router';
 import Navbar from './components/Navbar';
 import DashBoard from './pages/dashboard/Dashboard';
 import WorkArea from './components/WorkArea';
+import Allstudents from './pages/Allstudents/Allstudents';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="dashboard" element={<DashBoard/>}>
         <Route path="" element={<WorkArea/>}/>
+        <Route path="Allstudents" element={<Allstudents/>} />
         </Route>
       </Routes>
     </div>
