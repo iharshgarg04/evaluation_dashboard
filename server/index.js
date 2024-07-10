@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const dotenv = require("dotenv");
 
+const studentRoute = require('./routes/studentRoute');
+
 const app = express();
 app.use(express.json());
 app.use(cors({
@@ -12,6 +14,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 4000;
 
+app.use('/student',studentRoute);
 
 const connectDb = async()=>{
     try{
@@ -23,6 +26,7 @@ const connectDb = async()=>{
     }
 }
 connectDb();
+
 
 app.listen(PORT,()=>{
     console.log(`server is successfully running on port ${PORT}`);
