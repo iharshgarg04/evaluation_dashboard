@@ -1,0 +1,9 @@
+.main-container{
+    display: flex;
+    height: 92vh;
+}
+@media screen and (max-width: 768px) {
+    .main-container{
+        flex-direction: column;
+    }
+  }

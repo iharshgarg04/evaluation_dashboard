@@ -2,13 +2,19 @@ import React, { useEffect, useState } from "react";
 import "./allstudents.css";
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import axios from "axios";
-import { toast } from "react-toastify";
+// import StudentList from "../../components/StudentList";
 import AllStudentList from "../../components/Allstudents";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import {refreshSidebarfun } from "../../features/refreshSlice";
 
 const Allstudents = () => {
   const [Students, setStudents] = useState([]);
   const [checked, setChecked] = React.useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const studentData = useSelector((state) => state.studentKey);
+  const refresh = useSelector((state)=>state.refreshKey);
   const mentor = JSON.parse(localStorage.getItem("mentorData"));
   useEffect(() => {
     const fetchAllStudents = async () => {
@@ -19,7 +25,7 @@ const Allstudents = () => {
     };
     fetchAllStudents();
     // console.log(studentData,"hi stu")
-  }, []);
+  }, [refresh]);
 
   const handleCreate = async () => {
     try {
@@ -27,12 +33,13 @@ const Allstudents = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_DEPLOYMENT_URL}/mentor/addStudents`,
         {
-        //   students: studentData.studentData,
+          students: studentData.studentData,
           mentorId: mentor._id,
         }
       );
       console.log(response, "hi res");
       if (response.status === 200) {
+        dispatch(refreshSidebarfun());
         toast.success("students added successfully");
         setChecked([]);
         setLoading(false);

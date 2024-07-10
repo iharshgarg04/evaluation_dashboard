@@ -26,7 +26,7 @@ exports.fetchMentors = async(req,res)=>{
   exports.addStudents = async(req,res)=>{
     try{
         const {students,mentorId} = req.body;
-        if(!students || mentorId){
+        if(!students || !mentorId){
             return res.status(400).json({
                 success:false,
                 message:"student is not selected",

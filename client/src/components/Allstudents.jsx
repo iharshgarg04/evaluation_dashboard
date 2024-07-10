@@ -5,8 +5,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
+import { useDispatch } from 'react-redux';
+import  { setStudentData } from '../features/student';
 
 const AllStudentList = ({Students,checked,setChecked}) => {
+    const dispatch = useDispatch();
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -19,13 +22,16 @@ const AllStudentList = ({Students,checked,setChecked}) => {
     }
 
     setChecked(newChecked);
+    dispatch(setStudentData(newChecked));
+    // setChecked([]);
     console.log(newChecked,"hii checked")
   };
 
+const unassingedStudents = Students.filter((student)=> student.assigned ===false);
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      {Students.length===0 ? <p style={{textAlign:"center"}}>No more student available to be assigned</p>:
-      Students.map((value,index) => {
+      {unassingedStudents.length===0 ? <p style={{textAlign:"center"}}>No more student available to be assigned</p>:
+      unassingedStudents.map((value,index) => {
         const labelId = `checkbox-list-label-${value}`;
 
         return (

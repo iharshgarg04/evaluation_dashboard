@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import StudentList from "./StudentList";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
+import {refreshSidebarfun } from "../features/refreshSlice";
 
 const Sidebar = () => {
   const [mystudents, setMystudents] = useState([]);
@@ -14,6 +14,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const mentor = JSON.parse(localStorage.getItem("mentorData"));
   const navigate = useNavigate();
+  const refresh = useSelector((state) => state.refreshKey);
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -37,9 +38,55 @@ const Sidebar = () => {
       }
     };
     fetchStudents();
-  }, []);
+  }, [refresh]);
 
+//   const generatePDF = async (studentData) => {
+//     const docDefinition = {
+//       content: [
+//         { text: "Student report", style: "header" },
+//         { text: "Name: " + studentData.studentId.name },
+//         { text: "Viva: " + (studentData.mark ? studentData.mark.viva : 0) },
+//         {
+//           text:
+//             "Execution: " + (studentData.mark ? studentData.mark.execution : 0),
+//         },
+//         {
+//           text:
+//             "ideation: " + (studentData.mark ? studentData.mark.ideation : 0),
+//         },
+//         {
+//           text:
+//             "Project Management: " +
+//             (studentData.mark ? studentData.mark.projectManagement : 0),
+//         },
+//         {
+//           text:
+//             "Team Work: " + (studentData.mark ? studentData.mark.teamWork : 0),
+//         },
+//         { text: "Total marks: " + studentData.studentId.totalMarks },
+//       ],
+//       styles: {
+//         header: {
+//           fontSize: 18,
+//           bold: true,
+//           margin: [0, 0, 0, 10],
+//         },
+//       },
+//     };
 
+//     pdfMake
+//       .createPdf(docDefinition)
+//       .download(studentData.studentId.name + "_report.pdf");
+//   };
+
+//   useEffect(()=>{
+//     console.log(markstudent,"New marks")
+//     markstudent.forEach((student) => {
+//       console.log(student);
+//       // console.log(student.mark,"Hii brother");
+//       generatePDF(student);
+//     });
+//   },[markstudent])
 
   const handleSubmit = async () => {
     try {
@@ -115,7 +162,7 @@ const Sidebar = () => {
             },
           }}
           onClick={()=>{
-        
+            dispatch(refreshSidebarfun());
             handleSubmit();
           }}
           disabled={loading}

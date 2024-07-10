@@ -7,6 +7,7 @@ import { myContext } from "../pages/dashboard/Dashboard";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { refreshSidebarfun } from "../features/refreshSlice";
 
 const StudentList = ({ mystudents }) => {
   const { student, setStudent } = useContext(myContext);
@@ -26,6 +27,7 @@ const StudentList = ({ mystudents }) => {
       );
       if (response.status === 200) {
         toast.success("student removed successfully");
+        dispatch(refreshSidebarfun());
         setLoading(false);
       }
       console.log(response);
