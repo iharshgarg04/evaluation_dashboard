@@ -109,3 +109,38 @@ exports.fetchMentors = async(req,res)=>{
     }
   }
 
+  exports.submitAdmin = async(req,res)=>{
+    try{
+        const {mentorId} = req.body;
+        if(!mentorId){
+            return res.status(400).json({
+                success:true,
+                message:"all fields are required",
+            })
+        }
+        const mentor = await Mentor.findById(mentorId);
+        if(mentor.locked===true){
+            return res.status(400).json({
+                success:false,
+                message:"you have already submitted the evaluation"
+            })
+        }
+        const students = mentor.student;
+        if(students.length===0){
+            return res.status(400).json({
+                success:false,
+                message:"Add students before submitting grading",
+            })
+        }
+        mentor.locked=true;
+        await mentor.save();
+
+        return res.status(200).json({
+            success:true,
+            message:"marks locked successfully"
+        })
+    }catch(error){
+        console.log("Error while submitting");
+        console.log(error);
+    }
+  }
