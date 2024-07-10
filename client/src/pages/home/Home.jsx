@@ -14,7 +14,7 @@ const navigate = useNavigate();
     const fetchMentors=async()=>{
         try{
             setLoading(true);
-            const response = await axios.get(`http://localhost:4000/mentor/fetchMentors`);
+            const response = await axios.get(`${process.env.REACT_APP_DEPLOYMENT_URL}/mentor/fetchMentors`);
             // console.log(response);
             setMentors(response.data.mentors);
             setLoading(false);
