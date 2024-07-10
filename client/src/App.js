@@ -9,6 +9,7 @@ import DashBoard from './pages/dashboard/Dashboard';
 import WorkArea from './components/WorkArea';
 import Allstudents from './pages/Allstudents/Allstudents';
 import View from './pages/view/View';
+import Marksheet from './components/Marksheet';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="" element={<WorkArea/>}/>
         <Route path="Allstudents" element={<Allstudents/>} />
         <Route path ="view" element={<View/>} />
+        <Route path="marks" element={<Marksheet/>}/>
         </Route>
       </Routes>
     </div>
