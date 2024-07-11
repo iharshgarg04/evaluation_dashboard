@@ -7,6 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {refreshSidebarfun } from "../features/refreshSlice";
 
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 const Sidebar = () => {
   const [mystudents, setMystudents] = useState([]);
   const [markstudent, setMarkstudent] = useState([]);
@@ -40,53 +45,52 @@ const Sidebar = () => {
     fetchStudents();
   }, [refresh]);
 
-//   const generatePDF = async (studentData) => {
-//     const docDefinition = {
-//       content: [
-//         { text: "Student report", style: "header" },
-//         { text: "Name: " + studentData.studentId.name },
-//         { text: "Viva: " + (studentData.mark ? studentData.mark.viva : 0) },
-//         {
-//           text:
-//             "Execution: " + (studentData.mark ? studentData.mark.execution : 0),
-//         },
-//         {
-//           text:
-//             "ideation: " + (studentData.mark ? studentData.mark.ideation : 0),
-//         },
-//         {
-//           text:
-//             "Project Management: " +
-//             (studentData.mark ? studentData.mark.projectManagement : 0),
-//         },
-//         {
-//           text:
-//             "Team Work: " + (studentData.mark ? studentData.mark.teamWork : 0),
-//         },
-//         { text: "Total marks: " + studentData.studentId.totalMarks },
-//       ],
-//       styles: {
-//         header: {
-//           fontSize: 18,
-//           bold: true,
-//           margin: [0, 0, 0, 10],
-//         },
-//       },
-//     };
+  const generatePDF = async (studentData) => {
+    const docDefinition = {
+      content: [
+        { text: "Student report", style: "header" },
+        { text: "Name: " + studentData.studentId.name },
+        { text: "Viva: " + (studentData.mark ? studentData.mark.viva : 0) },
+        {
+          text:
+            "Execution: " + (studentData.mark ? studentData.mark.execution : 0),
+        },
+        {
+          text:
+            "ideation: " + (studentData.mark ? studentData.mark.ideation : 0),
+        },
+        {
+          text:
+            "Project Management: " +
+            (studentData.mark ? studentData.mark.projectManagement : 0),
+        },
+        {
+          text:
+            "Team Work: " + (studentData.mark ? studentData.mark.teamWork : 0),
+        },
+        { text: "Total marks: " + studentData.studentId.totalMarks },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10],
+        },
+      },
+    };
 
-//     pdfMake
-//       .createPdf(docDefinition)
-//       .download(studentData.studentId.name + "_report.pdf");
-//   };
+    pdfMake
+      .createPdf(docDefinition)
+      .download(studentData.studentId.name + "_report.pdf");
+  };
 
-//   useEffect(()=>{
-//     console.log(markstudent,"New marks")
-//     markstudent.forEach((student) => {
-//       console.log(student);
-//       // console.log(student.mark,"Hii brother");
-//       generatePDF(student);
-//     });
-//   },[markstudent])
+  useEffect(()=>{
+    console.log(markstudent,"New marks")
+    markstudent.forEach((student) => {
+      console.log(student);
+      generatePDF(student);
+    });
+  },[markstudent])
 
   const handleSubmit = async () => {
     try {
@@ -162,7 +166,6 @@ const Sidebar = () => {
             },
           }}
           onClick={()=>{
-            dispatch(refreshSidebarfun());
             handleSubmit();
           }}
           disabled={loading}
