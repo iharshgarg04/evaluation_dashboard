@@ -80,11 +80,11 @@ const Allstudents = () => {
           color: "black",
           display: "flex",
           justifyContent: "flex-end",
-          paddingRight: "20px",
+          padding:"12px 12px"
         }}
       >
         <Button
-          sx={{ background: "#5c5470", color: "white",marginBottom:"25px" }}
+          sx={{ background: "#5c5470", color: "white"}}
           onClick={handleCreate}
           disabled={loading}
         >

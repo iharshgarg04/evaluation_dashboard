@@ -13,4 +13,5 @@
 }
 .allstudent-list{
     flex: 5;
+    overflow: auto;
 }

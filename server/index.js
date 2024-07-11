@@ -28,8 +28,6 @@ const connectDb = async()=>{
     }
 }
 connectDb();
-
-Student.create({name:"Dhairya",email:"Maya@gmail.com",mentorId:null,totalMarks:0,assigned:false,graded:false});
 app.listen(PORT,()=>{
     console.log(`server is successfully running on port ${PORT}`);
 })

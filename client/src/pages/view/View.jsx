@@ -8,7 +8,7 @@ const View = () => {
   const [Students, setStudents] = useState([]);
   const [assigned, setAssigned] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   useEffect(() => {
     const fetchAllStudents = async () => {
       setLoading(true);
