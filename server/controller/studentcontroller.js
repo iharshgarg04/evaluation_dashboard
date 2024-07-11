@@ -153,3 +153,32 @@ exports.fetchMyStudents = async(req,res)=>{
 }
 
 
+exports.CreateNewStudent = async(req,res)=>{
+  try{
+    const {name,email} = req.body;
+    console.log(req.body);
+    if(!name || !email) {
+      return res.status(400).json({
+        success:false,
+        message:"Name or Email is not Entered"
+      })
+    }
+
+    const student = Student.create({name:name,email:email,graded:false,assigned:false});
+    if(!student){
+      return res.status(400).json({
+        success:false,
+        message:"Error while creating the student",
+      })
+    }
+
+    return res.status(200).json({
+      success:true,
+      message:"Student is created successfully",
+    })
+
+  }catch(error){
+    console.log(error);
+    console.log("Error while adding student");
+  }
+}

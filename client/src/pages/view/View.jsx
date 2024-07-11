@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import "./view.css";
 import axios from "axios";
 import { Assignment } from "@mui/icons-material";
+import DialogContainer from "../../components/Dialog";
 
 const View = () => {
   const [Students, setStudents] = useState([]);
   const [assigned, setAssigned] = useState(false);
   const [loading, setLoading] = useState(false);
   const [active, setActive] = useState(true);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     const fetchAllStudents = async () => {
       setLoading(true);
@@ -27,6 +29,9 @@ const View = () => {
   const handleUnassignedButtonClick = () => {
     setAssigned(false);
   };
+  const handleOpen = ()=>{
+    setOpen(true);
+  }
 
   return (
     <div className="view-container">
@@ -62,6 +67,21 @@ const View = () => {
             {" "}
             Unassinged Students
           </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#31363F",
+              "&:hover": { backgroundColor: "grey" },
+            }}
+
+            onClick={()=>{
+              handleOpen();
+            }}
+          >
+            {" "}
+            Add New Student
+          </Button>
+          <DialogContainer open={open} setOpen={setOpen}/>
         </div>
       </div>
       <div>
