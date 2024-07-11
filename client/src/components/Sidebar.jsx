@@ -1,11 +1,17 @@
-import { Backdrop, Button, CircularProgress, Icon, IconButton } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Icon,
+  IconButton,
+} from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import StudentList from "./StudentList";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {refreshSidebarfun } from "../features/refreshSlice";
+import { refreshSidebarfun } from "../features/refreshSlice";
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -20,6 +26,7 @@ const Sidebar = () => {
   const mentor = JSON.parse(localStorage.getItem("mentorData"));
   const navigate = useNavigate();
   const refresh = useSelector((state) => state.refreshKey);
+  const [active, setActive] = useState(false);
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -84,13 +91,13 @@ const Sidebar = () => {
       .download(studentData.studentId.name + "_report.pdf");
   };
 
-  useEffect(()=>{
-    console.log(markstudent,"New marks")
+  useEffect(() => {
+    console.log(markstudent, "New marks");
     markstudent.forEach((student) => {
       console.log(student);
       generatePDF(student);
     });
-  },[markstudent])
+  }, [markstudent]);
 
   const handleSubmit = async () => {
     try {
@@ -127,7 +134,9 @@ const Sidebar = () => {
         <div>
           <Button
             sx={{ color: "black", fontSize: "16px", fontWeight: "600" }}
+            className={active ? "active" : ""}
             onClick={() => {
+              setActive(true);
               navigate("Allstudents");
             }}
           >
@@ -135,7 +144,11 @@ const Sidebar = () => {
           </Button>
           <Button
             sx={{ color: "black", fontSize: "16px", fontWeight: "600" }}
-            onClick={() => navigate("view")}
+            className={!active ? 'active' : ''}
+            onClick={() => {
+              setActive(false);
+              navigate("view");
+            }}
           >
             view
           </Button>
@@ -165,7 +178,7 @@ const Sidebar = () => {
               backgroundColor: "grey",
             },
           }}
-          onClick={()=>{
+          onClick={() => {
             handleSubmit();
           }}
           disabled={loading}

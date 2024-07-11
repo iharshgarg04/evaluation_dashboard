@@ -8,7 +8,7 @@ const View = () => {
   const [Students, setStudents] = useState([]);
   const [assigned, setAssigned] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [active, setActive] = useState(false);
   useEffect(() => {
     const fetchAllStudents = async () => {
       setLoading(true);
@@ -38,7 +38,11 @@ const View = () => {
               backgroundColor: "#31363F",
               "&:hover": { backgroundColor: "grey" },
             }}
-            onClick={handleAssignedButtonClick}
+            className={!active ? "active" : ''}
+            onClick={()=>{
+              setActive(false);
+              handleAssignedButtonClick();
+            }}
             
           >
             Assigned Students
@@ -49,7 +53,11 @@ const View = () => {
               backgroundColor: "#31363F",
               "&:hover": { backgroundColor: "grey" },
             }}
-            onClick={handleUnassignedButtonClick}
+            className={active ? "active" : ''}
+            onClick={()=>{
+              setActive(true);
+              handleUnassignedButtonClick();
+            }}
           >
             {" "}
             Unassinged Students

@@ -56,6 +56,10 @@
   display: flex;
   justify-content: space-between;
 }
+.active{
+  background-color: #736b88 !important;
+  color: white !important;
+}
 .student-sidebar-list:hover {
   background-color: #5c5470;
   color: white !important;

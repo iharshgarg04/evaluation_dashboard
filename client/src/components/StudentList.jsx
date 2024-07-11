@@ -14,6 +14,7 @@ const StudentList = ({ mystudents }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [active, setActive] = useState(null);
   const mentor = JSON.parse(localStorage.getItem("mentorData"));
   const handleDelete = async(student) => {
     try {
@@ -49,14 +50,15 @@ const StudentList = ({ mystudents }) => {
       {mystudents.map((stu, index) => (
         <div
           key={index}
-          className="student-sidebar-list"
+          className={`student-sidebar-list` + (active===index ? ' active' : '')}
           onClick={() => {
             setStudent(stu);
             navigate("marks");
+            setActive(index);
           }}
         >
           {stu.name}
-          <div className="student-sidebar-icons">
+          <div className={"student-sidebar-icons"}>
             <IconButton
               sx={{
                 "&:hover": {
@@ -65,6 +67,7 @@ const StudentList = ({ mystudents }) => {
                   zIndex:"2"
                 },
               }}
+              className={(active===index ? 'active' : ' ')}
               onClick={(e)=>{
                 e.stopPropagation();
                 setStudent(stu);
@@ -81,6 +84,7 @@ const StudentList = ({ mystudents }) => {
                   zIndex:"20"
                 },
               }}
+              className={(active===index ? 'active' : ' ')}
               onClick={(e) => {
                 e.stopPropagation();
                { mystudents.length>3 ? handleDelete(stu): toast.error("AtLeast 3 stundets are required")}
