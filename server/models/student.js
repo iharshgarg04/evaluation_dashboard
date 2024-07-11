@@ -20,6 +20,10 @@ const studentSchema = new mongoose.Schema({
     totalMarks:{
         type:Number,
         default:0
+    },
+    graded:{
+        type:Boolean,
+        default:false,
     }
 })
 

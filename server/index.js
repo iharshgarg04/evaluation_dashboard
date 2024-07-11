@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 
 const studentRoute = require('./routes/studentRoute');
 const mentorRoute = require('./routes/mentorRouter');
+const Student = require("./models/student");
 
 const app = express();
 app.use(express.json());
@@ -28,7 +29,7 @@ const connectDb = async()=>{
 }
 connectDb();
 
-
+Student.create({name:"Dhairya",email:"Maya@gmail.com",mentorId:null,totalMarks:0,assigned:false,graded:false});
 app.listen(PORT,()=>{
     console.log(`server is successfully running on port ${PORT}`);
 })

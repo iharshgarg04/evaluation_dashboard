@@ -75,7 +75,7 @@ exports.fetchAllStudents = async(req,res)=>{
           { new: true, upsert: true }
         ).populate("student");
   
-        const stuMarks = await Student.findByIdAndUpdate(studentId,{totalMarks:totalMarks});
+        const stuMarks = await Student.findByIdAndUpdate(studentId,{totalMarks:totalMarks,graded:true});
   
       return res.status(200).json({
         success: true,

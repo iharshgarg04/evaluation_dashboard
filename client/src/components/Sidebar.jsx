@@ -101,8 +101,8 @@ const Sidebar = () => {
         console.log(response);
         setMarkstudent(response.data.studentMarks);
         toast.success("marks locked successfully");
-        setLoading(false);
         console.log(response);
+        setLoading(false);
       }
     } catch (error) {
       setLoading(false);

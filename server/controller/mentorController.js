@@ -135,6 +135,14 @@ exports.fetchMentors = async(req,res)=>{
             })
         }
 
+        const NotAllAssigned = students.some((student)=> student.graded===false);
+        if(NotAllAssigned){
+            return res.status(404).json({
+                success:false,
+                message:"Not all students assigned marks",
+            })
+        }
+
         const marksObtained = students.map(async(studentId)=>{
             const mark = await Marks.findOne({student:studentId}).populate("student");
             return {studentId,mark};
