@@ -1,6 +1,8 @@
 const Marks = require("../models/marks");
 const Mentor = require("../models/mentor");
 const Student = require("../models/student");
+const emailTemplate = require("../utils/emailTempelate");
+const mailSender = require("../utils/mailSender");
 
 exports.fetchMentors = async(req,res)=>{
     try{
@@ -118,7 +120,7 @@ exports.fetchMentors = async(req,res)=>{
                 message:"all fields are required",
             })
         }
-        const mentor = await Mentor.findById(mentorId);
+        const mentor = await Mentor.findById(mentorId).populate("student");
         if(mentor.locked===true){
             return res.status(400).json({
                 success:false,
@@ -132,12 +134,27 @@ exports.fetchMentors = async(req,res)=>{
                 message:"Add students before submitting grading",
             })
         }
+
+        const marksObtained = students.map(async(studentId)=>{
+            const mark = await Marks.findOne({student:studentId}).populate("student");
+            return {studentId,mark};
+        })
+        const studentMarks = await Promise.all(marksObtained);
+        console.log(studentMarks);
+        for(let i=0;i<studentMarks.length;i++){
+            const response = await mailSender(studentMarks[i].studentId.email,"Uploaded Marks",emailTemplate(studentMarks[i].studentId.name,studentMarks[i].mark));
+            if(!response){
+              console.log("error while sending email");
+            }
+          }
         mentor.locked=true;
         await mentor.save();
 
         return res.status(200).json({
             success:true,
-            message:"marks locked successfully"
+            message:"marks locked successfully",
+            mentor: mentor,
+            studentMarks:studentMarks
         })
     }catch(error){
         console.log("Error while submitting");
