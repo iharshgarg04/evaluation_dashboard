@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   CircularProgress,
@@ -39,7 +39,6 @@ const marks = [
   },
 ];
 
-
 const Marks = () => {
   const {student,setStudent} = useContext(myContext);
   const [loading, setLoading] = useState(false);
@@ -54,9 +53,45 @@ const Marks = () => {
   const handleChange = (e)=>{
     const { name, value } = e.target;
     const parsedValue = Math.max(0, Math.min(10, parseInt(value) || 0));
-    setMarksval({ ...marksval, [name]: parsedValue });
-    console.log(parsedValue);
+    setMarksval({
+      ...marksval,
+      [name]: parsedValue,
+    });
   }
+
+  useEffect(() => {
+    const fetchMarks = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_DEPLOYMENT_URL}/student/fetchMarks`,
+          {
+            headers: {
+              student: student._id,
+            },
+          }
+        );
+        if (response.status === 200) {
+          const fetchedMarks = response.data.student;
+          const initialMarksval = {
+            viva: fetchedMarks ? fetchedMarks.viva : 0,
+            ideation: fetchedMarks ? fetchedMarks.ideation : 0,
+            execution: fetchedMarks ? fetchedMarks.execution : 0,
+            projectManagement: fetchedMarks ? fetchedMarks.projectManagement : 0,
+            teamWork: fetchedMarks ? fetchedMarks.teamWork : 0,
+          };
+          setMarksval(initialMarksval);
+          console.log("hiii",response);
+          setLoading(false);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.log(error.message);
+      }
+    };
+    fetchMarks();
+  }, [student]);
+
   const handleSubmit=async()=>{
     try{
       setLoading(true);
@@ -71,13 +106,6 @@ const Marks = () => {
       })
       if(response.status===200){
         toast.success("marks are saved successfully")
-        setMarksval({
-          viva:0,
-          execution:0,
-          projectManagement:0,
-          teamWork:0,
-          ideation:0,
-        })
         setLoading(false);
       }
       console.log(response);
@@ -87,7 +115,7 @@ const Marks = () => {
         toast.error("click on add Marks again to continue")
       }
       else if(error && error.response.status===400){
-        toast.error( "enter all fields")
+        toast.error( "enter all fields Or you have already submitted the assignments")
       } 
       console.log(error);
     }
@@ -104,12 +132,12 @@ const Marks = () => {
               <OutlinedInput
               required
                 id={mark.id}
-                placeholder="0-10"
+                placeholder="1-10"
                 label={mark.label}
                 type="number"
                 name = {mark.id}
-                onChange={handleChange}
-                value={marksval[mark.id]} 
+                value = {marksval[mark.id] ===0 ?'0' : marksval[mark.id]}
+                onChange={handleChange} 
                 inputProps={{
                   min: 0,
                   max: 10,

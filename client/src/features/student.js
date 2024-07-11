@@ -4,7 +4,6 @@ const initialState = {
     studentData: [],
   };
 
-
 export const studentSlice = createSlice({
     name :"student",
     initialState:initialState,

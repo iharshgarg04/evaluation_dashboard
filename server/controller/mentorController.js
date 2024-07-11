@@ -98,7 +98,7 @@ exports.fetchMentors = async(req,res)=>{
         await Student.findByIdAndUpdate(studentId,{$unset:{mentorId:'',assigned:false}},{new:true});
         const response = await Mentor.findByIdAndUpdate(mentorId,{$pull:{student:studentId}},{new:true}).populate("student");
         await Marks.deleteMany({student:studentId});
-        return res.status(400).json({
+        return res.status(200).json({
             success:true,
             message:"student removed successfully",
             response,
