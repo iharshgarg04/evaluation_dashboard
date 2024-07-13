@@ -49,6 +49,13 @@ const Marks = () => {
     teamWork:0,
     ideation:0,
   })
+  const [files, setFiles] = useState({
+    viva: "",
+    execution: "",
+    projectManagement: "",
+    teamWork: "",
+    ideation: "",
+  });
   const mentor = JSON.parse(localStorage.getItem("mentorData"));
   const handleChange = (e)=>{
     const { name, value } = e.target;
@@ -74,11 +81,11 @@ const Marks = () => {
         if (response.status === 200) {
           const fetchedMarks = response.data.student;
           const initialMarksval = {
-            viva: fetchedMarks ? fetchedMarks.viva : 0,
-            ideation: fetchedMarks ? fetchedMarks.ideation : 0,
-            execution: fetchedMarks ? fetchedMarks.execution : 0,
-            projectManagement: fetchedMarks ? fetchedMarks.projectManagement : 0,
-            teamWork: fetchedMarks ? fetchedMarks.teamWork : 0,
+            viva: fetchedMarks ? fetchedMarks.viva.marks : 0,
+            ideation: fetchedMarks ? fetchedMarks.ideation.marks : 0,
+            execution: fetchedMarks ? fetchedMarks.execution.marks : 0,
+            projectManagement: fetchedMarks ? fetchedMarks.projectManagement.marks : 0,
+            teamWork: fetchedMarks ? fetchedMarks.teamWork.marks : 0,
           };
           setMarksval(initialMarksval);
           console.log("hiii",response);
@@ -92,34 +99,52 @@ const Marks = () => {
     fetchMarks();
   }, [student]);
 
-  const handleSubmit=async()=>{
-    try{
+  const handleSubmit = async () => {
+    try {
       setLoading(true);
-      const response = await axios.post(`${process.env.REACT_APP_DEPLOYMENT_URL}/student/marks`,{
-        studentId:student._id,
-        mentorId:mentor._id,
-        viva:marksval.viva,
-        ideation:marksval.ideation,
-        execution:marksval.execution,
-        projectManagement:marksval.projectManagement,
-        teamWork:marksval.teamWork,
-      })
-      if(response.status===200){
-        toast.success("marks are saved successfully")
+      const formData = new FormData();
+      formData.append("studentId", student._id);
+      formData.append("mentorId", mentor._id);
+      formData.append("viva", marksval.viva);
+      formData.append("ideation", marksval.ideation);
+      formData.append("execution", marksval.execution);
+      formData.append("projectManagement", marksval.projectManagement);
+      formData.append("teamWork", marksval.teamWork);
+
+      Object.keys(files).forEach((key) => {
+        if (files[key]) {
+          formData.append(key, files[key]);
+        }
+      });
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_DEPLOYMENT_URL}/student/marksUpload`,
+        formData,
+      );
+      
+      if (response.status === 201) {
+        toast.success("marks are saved successfully");
         setLoading(false);
       }
       console.log(response);
-    }catch(error){
+    } catch (error) {
       setLoading(false);
-      if(!student){
-        toast.error("click on add Marks again to continue")
+      if (!student) {
+        toast.error("click on add Marks again to continue");
+      } else if (error && error.response.status === 400) {
+        toast.error("enter all fields Or you have already submitted the assignments");
       }
-      else if(error && error.response.status===400){
-        toast.error( "enter all fields Or you have already submitted the assignments")
-      } 
       console.log(error);
     }
-  }
+  };
+
+  const handleChangeFile = (e) => {
+    const { name, files: selectedFiles } = e.target;
+    setFiles((prevFiles) => ({
+      ...prevFiles,
+      [name]: selectedFiles[0],
+    }));
+  };
   return (
     <div className="marks-container">
       <div className="marks-header">
@@ -147,6 +172,8 @@ const Marks = () => {
                 }}
               />
             </FormControl>
+            <input type="file" name={mark.id} onChange={handleChangeFile} />
+              {files[mark.id] && <p>{files[mark.id].name}</p>}
           </div>
         ))
         }

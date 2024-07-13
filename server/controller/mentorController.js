@@ -145,6 +145,7 @@ exports.fetchMentors = async(req,res)=>{
 
         const marksObtained = students.map(async(studentId)=>{
             const mark = await Marks.findOne({student:studentId}).populate("student");
+            console.log(mark.viva.pdfFile);
             return {studentId,mark};
         })
         const studentMarks = await Promise.all(marksObtained);
@@ -155,7 +156,7 @@ exports.fetchMentors = async(req,res)=>{
               console.log("error while sending email");
             }
           }
-        mentor.locked=true;
+        // mentor.locked=true;
         await mentor.save();
 
         return res.status(200).json({

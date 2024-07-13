@@ -97,18 +97,20 @@ exports.fetchAllStudents = async(req,res)=>{
           message:"Student is not present in headers"
         })
       }
+      console.log(studentId)
       const student = await Marks.findOne({student:studentId});
+      console.log(student);
       if(!student){
-        return res.status(200).json({
+        return res.status(400).json({
           success:false,
           message:"Marks are not assigned yet"
         })
       }
-
+      console.log(student)
       res.status(200).json({
         success:true,
         message:"marks fetched successfully",
-        student
+        student:student
       })
     }catch(error){
       console.log(error);

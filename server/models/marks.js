@@ -6,28 +6,58 @@ const marksSchema = new mongoose.Schema({
         ref:"Student",
     },
     viva:{
-        type:Number,
-        default:0,
+        marks:{
+            type:Number,
+            default:0,
+        },
+        pdfFile:{
+            type:String
+        }
     },
     ideation:{
-        type:Number,
-        default:0,
+        marks:{
+            type:Number,
+            default:0,
+        },
+        pdfFile:{
+            type:String
+        }
     },
     execution:{
-        type:Number,
-        default:0,
+        marks:{
+            type:Number,
+            default:0,
+        },
+        pdfFile:{
+            type:String
+        }
     },
     projectManagement:{
-        type:Number,
-        default:0,
+        marks:{
+            type:Number,
+            default:0,
+        },
+        pdfFile:{
+            type:String
+        }
     },
     teamWork:{
-        type:Number,
-        default:0,
+        marks:{
+            type:Number,
+            default:0,
+        },
+        pdfFile:{
+            type:String
+        }
     },
     totalMarks:{
-        type:Number,
-        default:0,
+        marks:{
+            type:Number,
+            default:0,
+        },
+        pdfFile:{
+            type:String
+        }
     }
 })
 

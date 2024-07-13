@@ -57,25 +57,41 @@ const Sidebar = () => {
       content: [
         { text: "Student report", style: "header" },
         { text: "Name: " + studentData.studentId.name },
-        { text: "Viva: " + (studentData.mark ? studentData.mark.viva : 0) },
+        { text: "Viva: " + (studentData.mark ? studentData.mark.viva.marks : 0) },
+        { text: "Viva PDF: " + (studentData.mark ? studentData.mark.viva.pdfFile : 0) },
         {
           text:
-            "Execution: " + (studentData.mark ? studentData.mark.execution : 0),
+            "Execution: " + (studentData.mark ? studentData.mark.execution.marks : 0),
+        },{
+          text:
+          "Execution PDF: " + (studentData.mark.pdfFile ? studentData.mark.execution.pdfFile : "No pdf")
         },
         {
           text:
-            "ideation: " + (studentData.mark ? studentData.mark.ideation : 0),
+            "ideation: " + (studentData.mark ? studentData.mark.ideation.marks : 0),
+        },
+        {
+        text:
+          "ideation PDF: " + (studentData.mark.pdfFile ? studentData.mark.ideation.pdfFile : "No pdf")
         },
         {
           text:
             "Project Management: " +
-            (studentData.mark ? studentData.mark.projectManagement : 0),
+            (studentData.mark ? studentData.mark.projectManagement.marks : 0),
         },
         {
           text:
-            "Team Work: " + (studentData.mark ? studentData.mark.teamWork : 0),
+            "Project Management PDF: " + (studentData.mark.pdfFile ? studentData.mark.projectManagement.pdfFile : "No pdf")
+          },
+        {
+          text:
+            "Team Work: " + (studentData.mark ? studentData.mark.teamWork.marks : "No pdf"),
         },
-        { text: "Total marks: " + studentData.studentId.totalMarks },
+        {
+          text:
+            "Team Work PDF: " + (studentData.mark ? studentData.mark.teamWork.pdfFile : "No Pdf"),
+        },
+        { text: "Total marks: " + studentData.studentId.totalMarks.marks },
       ],
       styles: {
         header: {
@@ -94,7 +110,7 @@ const Sidebar = () => {
   useEffect(() => {
     console.log(markstudent, "New marks");
     markstudent.forEach((student) => {
-      console.log(student);
+      console.log(student,"PDFFILE");
       generatePDF(student);
     });
   }, [markstudent]);
