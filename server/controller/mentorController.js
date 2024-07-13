@@ -156,7 +156,7 @@ exports.fetchMentors = async(req,res)=>{
               console.log("error while sending email");
             }
           }
-        // mentor.locked=true;
+        mentor.locked=true;
         await mentor.save();
 
         return res.status(200).json({
